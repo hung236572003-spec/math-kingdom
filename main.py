@@ -1,7 +1,8 @@
+from supabase import create_client
 import os
+import json
 from flask import Flask, render_template_string, request, session, redirect, url_for, jsonify
 import random
-import json
 from datetime import datetime, timedelta, date
 import secrets
 import threading
@@ -12,6 +13,31 @@ app.secret_key = secrets.token_hex(16)
 app.permanent_session_lifetime = timedelta(hours=2)
 
 DATA_FILE = "multiplication_data.json"
+
+# Khởi tạo Supabase
+supabase = create_client(
+    "https://mkgmoefuuslprhwrtyxp.supabase.co",  # URL từ Supabase dashboard
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rZ21vZWZ1dXNscHJod3J0eXhwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3MDI0NTEsImV4cCI6MjA3MjI3ODQ1MX0.HXoDcuP32o3f0fHskSHPyhEE4ew_PgTXPLnwMsIkKl0"  # Anon key từ Supabase dashboard
+)
+
+def save_data(data):
+    """Lưu vào Supabase"""
+    supabase.table('app_data').upsert({
+        'id': 1,
+        'data': json.dumps(data)
+    }).execute()
+
+def load_data():
+    """Load từ Supabase"""
+    try:
+        response = supabase.table('app_data').select("*").eq('id', 1).execute()
+        if response.data:
+            return json.loads(response.data[0]['data'])
+    except:
+        pass
+    
+    # Trả về data mặc định
+    return get_initial_data()
 
 def save_data(data):
     """Save data vào Deta Base"""
