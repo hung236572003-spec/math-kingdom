@@ -163,6 +163,10 @@ def can_take_test(user_data):
         
     return False
 
+def is_admin_hung():
+    """Kiểm tra xem có phải admin Hùng không"""
+    return session.get('user') == '9874' and session.get('user_type') == 'admin'
+
 # Base template với responsive design tối ưu cho mobile và desktop
 HTML_TEMPLATE = '''
 <!DOCTYPE html>
@@ -370,11 +374,11 @@ HTML_TEMPLATE = '''
         .btn {
             padding: 15px 30px;
             background: linear-gradient(135deg, #ff6b9d, #c44569);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             border: none;
             border-radius: 25px;
             font-size: 18px;
-            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
@@ -509,10 +513,10 @@ HTML_TEMPLATE = '''
             top: 20px;
             right: 20px;
             background: linear-gradient(135deg, #74b9ff, #0984e3);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             padding: 10px 20px;
             border-radius: 20px;
-            font-weight: bold;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -560,13 +564,13 @@ HTML_TEMPLATE = '''
         
         .question-box {
             background: linear-gradient(135deg, #fab1a0, #e17055);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             padding: 25px;
             border-radius: 20px;
             margin: 20px 0;
             font-size: 28px;
             text-align: center;
-            font-weight: bold;
             animation: pulse 2s infinite;
             position: relative;
         }
@@ -599,7 +603,7 @@ HTML_TEMPLATE = '''
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
             font-weight: bold;
             background-size: 200% 100%;
             animation: shimmer 3s linear infinite;
@@ -732,12 +736,12 @@ HTML_TEMPLATE = '''
         
         .success-message {
             background: linear-gradient(135deg, #55efc4, #00b894);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             padding: 20px;
             border-radius: 20px;
             text-align: center;
             font-size: 20px;
-            font-weight: bold;
             margin: 20px 0;
             animation: slideIn 0.5s ease;
             position: relative;
@@ -777,12 +781,12 @@ HTML_TEMPLATE = '''
         
         .error-message {
             background: linear-gradient(135deg, #ff7675, #d63031);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             padding: 20px;
             border-radius: 20px;
             text-align: center;
             font-size: 20px;
-            font-weight: bold;
             margin: 20px 0;
             animation: shake 0.5s ease;
         }
@@ -795,11 +799,11 @@ HTML_TEMPLATE = '''
         
         .timer {
             background: linear-gradient(135deg, #fd79a8, #e84393);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             padding: 15px 30px;
             border-radius: 20px;
             font-size: 24px;
-            font-weight: bold;
             text-align: center;
             margin: 20px auto;
             max-width: 200px;
@@ -809,7 +813,8 @@ HTML_TEMPLATE = '''
         
         .wrong-answer {
             background: linear-gradient(135deg, #ff7675, #d63031);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             padding: 10px;
             border-radius: 10px;
             margin: 5px 0;
@@ -847,13 +852,15 @@ HTML_TEMPLATE = '''
         
         .message-student {
             background: linear-gradient(135deg, #74b9ff, #0984e3);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             margin-right: auto;
         }
         
         .message-admin {
             background: linear-gradient(135deg, #ff6b9d, #c44569);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             margin-left: auto;
         }
         
@@ -890,7 +897,8 @@ HTML_TEMPLATE = '''
         
         .collapsible {
             background-color: #e91e63;
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             cursor: pointer;
             padding: 15px;
             width: 100%;
@@ -926,7 +934,7 @@ HTML_TEMPLATE = '''
         
         .collapsible:after {
             content: '\\002B';
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
             font-weight: bold;
             float: right;
             margin-left: 5px;
@@ -1023,12 +1031,12 @@ HTML_TEMPLATE = '''
             position: relative;
             overflow: hidden;
             background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             border: none;
             padding: 15px 30px;
             border-radius: 50px;
             font-size: 18px;
-            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
@@ -1213,7 +1221,7 @@ HTML_TEMPLATE = '''
         /* Factory reset warning styles */
         .factory-reset-warning {
             background: linear-gradient(135deg, #ff0000, #8b0000);
-            color: white;
+            color: #ffd700;  /* Đổi từ white sang màu vàng */
             padding: 30px;
             border-radius: 20px;
             margin: 20px 0;
@@ -1281,7 +1289,8 @@ HTML_TEMPLATE = '''
         
         .history-summary {
             background: linear-gradient(135deg, #74b9ff, #0984e3);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             padding: 12px;
             border-radius: 10px;
             margin: 5px 0;
@@ -1296,7 +1305,8 @@ HTML_TEMPLATE = '''
         
         .delete-section-btn {
             background: linear-gradient(135deg, #ff7675, #d63031);
-            color: white;
+            color: #2d3436;  /* Đổi từ white sang màu tối */
+            font-weight: bold;
             padding: 10px 20px;
             border: none;
             border-radius: 15px;
@@ -2035,7 +2045,7 @@ def admin_dashboard():
     data = load_data()
     admin_name = data['admin'][session['user']]['name']
     
-    # Hiển thị hoạt động gần đây với nút xóa
+    # Hiển thị hoạt động gần đây với nút xóa CHỈ CHO ADMIN HÙNG
     activity_html = '''
     <div class="activity-log">
         <h3 style="color: #e91e63;">📋 Hoạt động gần đây:</h3>
@@ -2048,15 +2058,18 @@ def admin_dashboard():
         </div>
         '''
     
-    activity_html += '''
-        <form method="POST" action="/admin/clear_activity">
-            <button type="submit" class="delete-section-btn" 
-                    onclick="return confirm('Xóa toàn bộ log hoạt động?')">
-                🗑️ Xóa Log Hoạt Động
-            </button>
-        </form>
-    </div>
-    '''
+    # Chỉ hiển thị nút xóa nếu là admin Hùng
+    if is_admin_hung():
+        activity_html += '''
+            <form method="POST" action="/admin/clear_activity">
+                <button type="submit" class="delete-section-btn" 
+                        onclick="return confirm('Xóa toàn bộ log hoạt động?')">
+                    🗑️ Xóa Log Hoạt Động
+                </button>
+            </form>
+        '''
+    
+    activity_html += '</div>'
     
     ADMIN_CONTENT = f'''
     <div class="header">
@@ -2115,12 +2128,7 @@ def admin_dashboard():
             </div>
         </a>
         
-        <a href="/admin/factory_reset" style="text-decoration: none;">
-            <div class="menu-item" style="background: linear-gradient(135deg, #ff0000, #8b0000);">
-                <div class="menu-item-icon">🔴</div>
-                <div class="menu-item-title">FACTORY RESET</div>
-            </div>
-        </a>
+        {'<a href="/admin/factory_reset" style="text-decoration: none;"><div class="menu-item" style="background: linear-gradient(135deg, #ff0000, #8b0000);"><div class="menu-item-icon">🔴</div><div class="menu-item-title">FACTORY RESET</div></div></a>' if is_admin_hung() else ''}
         
         <a href="/logout" style="text-decoration: none;">
             <div class="menu-item">
@@ -2135,8 +2143,8 @@ def admin_dashboard():
 
 @app.route('/admin/clear_activity', methods=['POST'])
 def admin_clear_activity():
-    if 'user' not in session or session.get('user_type') != 'admin':
-        return redirect(url_for('index'))
+    if not is_admin_hung():
+        return redirect(url_for('admin_dashboard'))
     
     data = load_data()
     data['activity_log'] = []
@@ -2177,7 +2185,7 @@ def admin_notification():
                 return render_template_string(HTML_TEMPLATE + SUCCESS_MSG + 
                     '<div style="text-align: center;"><a href="/admin/notification" class="btn">Quay lại</a></div>' + HTML_FOOTER)
         
-        elif action == 'delete':
+        elif action == 'delete' and is_admin_hung():
             data['notifications'] = []
             log_activity(data, data['admin'][session['user']]['name'] + " (Admin)", "Xóa toàn bộ thông báo")
             save_data(data)
@@ -2218,24 +2226,27 @@ def admin_notification():
         </div>
         '''
     
-    NOTIFICATION_CONTENT += '''
-        <form method="POST" style="margin-top: 20px;">
-            <input type="hidden" name="action" value="delete">
-            <button type="submit" class="btn btn-danger" style="width: 100%;"
-                    onclick="return confirm('Bạn có chắc muốn xóa tất cả thông báo?')">
-                🗑️ Xóa Tất Cả Thông Báo
-            </button>
-        </form>
-    </div>
-    '''
+    # Chỉ hiển thị nút xóa nếu là admin Hùng
+    if is_admin_hung():
+        NOTIFICATION_CONTENT += '''
+            <form method="POST" style="margin-top: 20px;">
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" class="btn btn-danger" style="width: 100%;"
+                        onclick="return confirm('Bạn có chắc muốn xóa tất cả thông báo?')">
+                    🗑️ Xóa Tất Cả Thông Báo
+                </button>
+            </form>
+        '''
+    
+    NOTIFICATION_CONTENT += '</div>'
     
     return render_template_string(HTML_TEMPLATE + NOTIFICATION_CONTENT + HTML_FOOTER)
 
 @app.route('/admin/factory_reset', methods=['GET', 'POST'])
 def admin_factory_reset():
     """Factory Reset - Xóa toàn bộ dữ liệu và tạo lại từ đầu"""
-    if 'user' not in session or session.get('user_type') != 'admin':
-        return redirect(url_for('index'))
+    if not is_admin_hung():
+        return redirect(url_for('admin_dashboard'))
     
     if request.method == 'POST':
         confirm_code = request.form.get('confirm_code', '')
@@ -2360,7 +2371,7 @@ def admin_students():
     
     data = load_data()
     
-    if request.method == 'POST':
+    if request.method == 'POST' and is_admin_hung():
         student_pwd = request.form.get('student')
         if student_pwd in data['users']:
             data['users'][student_pwd]['check_history'] = []
@@ -2396,7 +2407,11 @@ def admin_students():
             <p class="info-text"><strong>Kim cương:</strong> {user['diamonds']:.1f} 💎</p>
             <p class="info-text"><strong>Số lần kiểm tra:</strong> {total_checks}</p>
             <p class="info-text"><strong>Số lần thi:</strong> {total_tests}</p>
-            
+        '''
+        
+        # Chỉ hiển thị nút xóa nếu là admin Hùng
+        if is_admin_hung():
+            STUDENTS_CONTENT += f'''
             <form method="POST">
                 <input type="hidden" name="student" value="{pwd}">
                 <button type="submit" class="delete-section-btn"
@@ -2404,9 +2419,9 @@ def admin_students():
                     🗑️ Xóa Lịch Sử
                 </button>
             </form>
-            
-            <h4 style="color: #e91e63; margin-top: 10px;">📝 Kiểm tra gần nhất:</h4>
-        '''
+            '''
+        
+        STUDENTS_CONTENT += '<h4 style="color: #e91e63; margin-top: 10px;">📝 Kiểm tra gần nhất:</h4>'
         
         for check in user.get('check_history', [])[-3:]:
             STUDENTS_CONTENT += f'''
@@ -2456,14 +2471,7 @@ def history():
     data = load_data()
     user_data = data['users'][session['user']]
     
-    if request.method == 'POST':
-        action = request.form.get('action')
-        if action == 'clear_history':
-            user_data['check_history'] = []
-            user_data['test_history'] = []
-            log_activity(data, user_data['name'], "Xóa lịch sử cá nhân")
-            save_data(data)
-            return redirect(url_for('history'))
+    # Học sinh KHÔNG ĐƯỢC phép xóa lịch sử
     
     HISTORY_CONTENT = f'''
     <div class="header">
@@ -2472,14 +2480,6 @@ def history():
             ← Quay lại
         </a>
     </div>
-    
-    <form method="POST">
-        <input type="hidden" name="action" value="clear_history">
-        <button type="submit" class="delete-section-btn" style="width: 100%;"
-                onclick="return confirm('Xóa toàn bộ lịch sử của bạn?')">
-            🗑️ Xóa Toàn Bộ Lịch Sử
-        </button>
-    </form>
     '''
     
     # Lịch sử kiểm tra với collapsible cho chi tiết
@@ -2618,7 +2618,7 @@ def chat():
                 
                 return redirect(url_for('chat'))
         
-        elif action == 'clear' and session.get('user_type') == 'admin':
+        elif action == 'clear' and is_admin_hung():
             data['messages'] = []
             log_activity(data, data['admin'][session['user']]['name'] + " (Admin)", "Xóa toàn bộ tin nhắn")
             save_data(data)
@@ -2633,11 +2633,13 @@ def chat():
             ← Quay lại
         </a>
     </div>
-    
-    {'<form method="POST"><input type="hidden" name="action" value="clear"><button type="submit" class="delete-section-btn" onclick="return confirm(\'Xóa toàn bộ tin nhắn?\')">🗑️ Xóa Toàn Bộ Tin Nhắn</button></form>' if session.get('user_type') == 'admin' else ''}
-    
-    <div class="chat-container">
     '''
+    
+    # Chỉ hiển thị nút xóa nếu là admin Hùng
+    if is_admin_hung():
+        CHAT_CONTENT += '<form method="POST"><input type="hidden" name="action" value="clear"><button type="submit" class="delete-section-btn" onclick="return confirm(\'Xóa toàn bộ tin nhắn?\')">🗑️ Xóa Toàn Bộ Tin Nhắn</button></form>'
+    
+    CHAT_CONTENT += '<div class="chat-container">'
     
     for msg in data.get('messages', [])[-20:]:
         msg_class = 'message-admin' if msg['sender_type'] == 'admin' else 'message-student'
@@ -2664,7 +2666,7 @@ def chat():
     
     return render_template_string(HTML_TEMPLATE + CHAT_CONTENT + HTML_FOOTER)
 
-# Các route còn lại giữ nguyên như code gốc...
+# Các route còn lại giữ nguyên...
 @app.route('/admin/passwords', methods=['GET', 'POST'])
 def admin_passwords():
     if 'user' not in session or session.get('user_type') != 'admin':
@@ -2792,8 +2794,7 @@ def admin_passwords():
     
     return render_template_string(HTML_TEMPLATE + PASSWORD_CONTENT + HTML_FOOTER)
 
-# Các route còn lại giữ nguyên...
-
+# Các route còn lại giữ nguyên như code gốc...
 @app.route('/learn')
 def learn():
     if 'user' not in session or session.get('user_type') != 'student':
