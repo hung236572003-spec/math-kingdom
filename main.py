@@ -2368,19 +2368,19 @@ def admin_factory_reset():
 def admin_students():
     if 'user' not in session or session.get('user_type') != 'admin':
         return redirect(url_for('index'))
-    
+
     data = load_data()
-    
+
     if request.method == 'POST' and is_admin_hung():
         student_pwd = request.form.get('student')
         if student_pwd in data['users']:
             data['users'][student_pwd]['check_history'] = []
             data['users'][student_pwd]['test_history'] = []
-            log_activity(data, data['admin'][session['user']]['name'] + " (Admin)", 
-                       f"Xóa lịch sử {data['users'][student_pwd]['name']}")
+            log_activity(data, data['admin'][session['user']]['name'] + " (Admin)",
+                         f"Xóa lịch sử {data['users'][student_pwd]['name']}")
             save_data(data)
             return redirect(url_for('admin_students'))
-    
+
     STUDENTS_CONTENT = '''
     <div class="header">
         <h1>👥 Danh Sách Học Sinh 👥</h1>
@@ -2388,17 +2388,17 @@ def admin_students():
             ← Quay lại
         </a>
     </div>
-    
+
     <div class="cute-border">
     '''
-    
+
     for pwd, user in data['users'].items():
         progress_text = f"Bảng {user['progress']}" if user['progress'] <= 9 else "Đã hoàn thành"
-        
-        # Tính tổng số câu đúng từ lịch sử kiểm tra và thi
+
+        # Tổng số kiểm tra và thi
         total_checks = len(user.get('check_history', []))
         total_tests = len(user.get('test_history', []))
-        
+
         STUDENTS_CONTENT += f'''
         <button class="collapsible">{user['name']} - Lớp {user['grade']} - {user['diamonds']:.1f} 💎</button>
         <div class="content">
@@ -2408,8 +2408,7 @@ def admin_students():
             <p class="info-text"><strong>Số lần kiểm tra:</strong> {total_checks}</p>
             <p class="info-text"><strong>Số lần thi:</strong> {total_tests}</p>
         '''
-        
-        # Chỉ hiển thị nút xóa nếu là admin Hùng
+
         if is_admin_hung():
             STUDENTS_CONTENT += f'''
             <form method="POST">
@@ -2420,35 +2419,53 @@ def admin_students():
                 </button>
             </form>
             '''
-        
-        STUDENTS_CONTENT += '<h4 style="color: #e91e63; margin-top: 10px;">📝 Kiểm tra gần nhất:</h4>'
-        
-        for check in user.get('check_history', [])[-3:]:
-            STUDENTS_CONTENT += f'''
-            <div class="history-summary">
-                <strong>Bảng {check['table']}:</strong> {check['correct']}/10 điểm
-                <br>📅 {check['timestamp']}
-            </div>
-            '''
-        
-        if user.get('test_history'):
-            STUDENTS_CONTENT += '<h4 style="color: #0984e3; margin-top: 10px;">🏆 Thi gần nhất:</h4>'
-            for test in user['test_history'][-2:]:
+
+        # Hiển thị kiểm tra chi tiết
+        if user.get('check_history'):
+            STUDENTS_CONTENT += '<h4 style="color: #e91e63; margin-top: 10px;">📝 Lịch sử kiểm tra:</h4>'
+            for check in user['check_history'][-5:]:
                 STUDENTS_CONTENT += f'''
                 <div class="history-summary">
-                    ✅ {test['correct']}/80 câu đúng
-                    <br>💎 Nhận {test['diamonds_earned']} kim cương
-                    <br>📅 {test['timestamp']}
-                </div>
+                    📌 Bảng {check['table']} - {check['correct']}/10
+                    <br>❌ Sai: {10 - check['correct']} câu
+                    <br>🕒 {check['timestamp']}
                 '''
-        
-        STUDENTS_CONTENT += '''
-        </div>
-        '''
-    
+                if check.get('wrong_answers'):
+                    STUDENTS_CONTENT += f'''
+                    <button class="collapsible" style="margin-top: 5px;">Xem chi tiết câu sai</button>
+                    <div class="content">
+                    '''
+                    for w in check['wrong_answers']:
+                        STUDENTS_CONTENT += f'<p>• {w["question"]} = {w["correct_answer"]} (bạn: {w["user_answer"]})</p>'
+                    STUDENTS_CONTENT += '</div>'
+                STUDENTS_CONTENT += '</div>'
+
+        # Hiển thị thi chi tiết
+        if user.get('test_history'):
+            STUDENTS_CONTENT += '<h4 style="color: #0984e3; margin-top: 10px;">🏆 Lịch sử thi:</h4>'
+            for test in user['test_history'][-3:]:
+                STUDENTS_CONTENT += f'''
+                <div class="history-summary">
+                    ✅ {test['correct']}/80
+                    <br>❌ Sai: {80 - test['correct']}
+                    <br>💎 Được: {test['diamonds_earned']}
+                    <br>🕒 {test['timestamp']}
+                '''
+                if test.get('wrong_answers'):
+                    STUDENTS_CONTENT += f'''
+                    <button class="collapsible" style="margin-top: 5px;">Xem chi tiết câu sai</button>
+                    <div class="content">
+                    '''
+                    for w in test['wrong_answers'][:10]:
+                        STUDENTS_CONTENT += f'<p>• {w["question"]} = {w["correct_answer"]} (bạn: {w["user_answer"]})</p>'
+                    STUDENTS_CONTENT += '</div>'
+                STUDENTS_CONTENT += '</div>'
+
+        STUDENTS_CONTENT += '</div>'
+
     STUDENTS_CONTENT += '''
     </div>
-    
+
     <script>
         const coll = document.getElementsByClassName("collapsible");
         for (let i = 0; i < coll.length; i++) {
@@ -2460,7 +2477,7 @@ def admin_students():
         }
     </script>
     '''
-    
+
     return render_template_string(HTML_TEMPLATE + STUDENTS_CONTENT + HTML_FOOTER)
 
 @app.route('/history', methods=['GET', 'POST'])
