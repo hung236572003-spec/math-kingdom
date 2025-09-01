@@ -1494,9 +1494,7 @@ def dashboard():
         </div>
         '''
     
-    # Tự động mở khóa thi khi hoàn thành bảng 9
     if user_data['progress'] == 9:
-        # Kiểm tra xem có bài kiểm tra 10/10 cho bảng 9 chưa
         for check in user_data.get('check_history', []):
             if check['table'] == 9 and check['correct'] == 10:
                 user_data['progress'] = 10
@@ -1517,7 +1515,7 @@ def dashboard():
 
     <div class="progress-bar">
         <div class="progress-fill" style="width: {(min(user_data['progress'], 9) - 2) * 12.5}%;">
-            {"Bảng " + str(user_data['progress']) if user_data['progress'] <= 9 else "Đã hoàn thành"}
+            {"---> " + str(user_data['progress']) if user_data['progress'] <= 9 else "Đã hoàn thành"}
         </div>
     </div>
 
@@ -1562,7 +1560,7 @@ def dashboard():
         <a href="/tables" style="text-decoration: none;">
             <div class="menu-item" style="background: linear-gradient(135deg, #c44569, #f8b500);">
                 <div class="menu-item-icon">📋</div>
-                <div class="menu-item-title">Xem Bảng</div>
+                <div class="menu-item-title">Xem Bảng Cửu Chương</div>
             </div>
         </a>
         
@@ -1584,8 +1582,7 @@ def check():
     
     data = load_data()
     user_data = data['users'][session['user']]
-    table = min(user_data['progress'], 9)  # Giới hạn tối đa bảng 9
-    
+    table = min(user_data['progress'], 9)    
     if request.method == 'GET':
         questions = [(table, i) for i in range(1, 11)]
         random.shuffle(questions)
@@ -1594,7 +1591,7 @@ def check():
         
         CHECK_CONTENT = f'''
         <div class="header">
-            <h1>✏️ Kiểm Tra Bảng {table} ✏️</h1>
+            <h1>✏️ Kiểm Tra Bảng Cửu Chương {table} ✏️</h1>
             <a href="/dashboard" class="btn" style="position: absolute; top: 20px; left: 20px;">
                 ← Quay lại
             </a>
@@ -1711,7 +1708,7 @@ def check():
         user_data["check_history"].append(check_result)
         
         # Log activity
-        log_activity(data, user_data['name'], f"Kiểm tra bảng {table}: {correct}/10")
+        log_activity(data, user_data['name'], f"Kiểm tra bảng cửu chương {table}: {correct}/10")
         
         # Tự động nâng cấp nếu đạt 10/10
         if correct == 10 and table < 9:
@@ -1720,7 +1717,7 @@ def check():
             
             RESULT_CONTENT = f'''
             <div class="success-message">
-                🎉 Xuất sắc! Bạn đã mở khóa bảng {table + 1}! 🎉
+                🎉 Xuất sắc! Bạn đã mở khóa bảng cửu chương{table + 1}! 🎉
             </div>
             <div style="text-align: center;">
                 <h2 style="color: #00b894;">Kết quả: {correct}/10 ✨</h2>
@@ -1729,13 +1726,12 @@ def check():
             </div>
             '''
         elif correct == 10 and table == 9:
-            # Mở khóa thi khi hoàn thành bảng 9
             user_data["progress"] = 10
             save_data(data)
             
             RESULT_CONTENT = f'''
             <div class="success-message">
-                🎊 Tuyệt vời! Bạn đã hoàn thành tất cả bảng cửu chương! 🎊
+                🎊 Tuyệt vời! Bạn đã hoàn thành tất cả bảng cửu chương từ 2 đến 9! 🎊
                 <br>Chức năng THI đã được mở khóa!
             </div>
             <div style="text-align: center;">
@@ -1827,7 +1823,7 @@ def test():
     
     if request.method == 'GET':
         questions = []
-        for table in range(2, 10):  # Bảng 2-9
+        for table in range(2, 10):
             for multiplier in range(1, 11):
                 questions.append((table, multiplier))
         random.shuffle(questions)
@@ -2393,7 +2389,7 @@ def admin_students():
     '''
 
     for pwd, user in data['users'].items():
-        progress_text = f"Bảng {user['progress']}" if user['progress'] <= 9 else "Đã hoàn thành"
+        progress_text = f"->>> {user['progress']}" if user['progress'] <= 9 else "Đã hoàn thành"
 
         # Tổng số kiểm tra và thi
         total_checks = len(user.get('check_history', []))
@@ -2823,7 +2819,7 @@ def learn():
     
     LEARN_CONTENT = f'''
     <div class="header">
-        <h1>📚 Học Bảng {table} 📚</h1>
+        <h1>📚 Học Bảng Cửu Chương Hiện Tại {table} 📚</h1>
         <a href="/dashboard" class="btn" style="position: absolute; top: 20px; left: 20px;">
             ← Quay lại
         </a>
